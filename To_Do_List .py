@@ -45,22 +45,50 @@ list_box=Listbox(root,width=35,height=18)
 list_box.configure(bg='seashell')
 list_box.pack()
 
+
 #Function Declaration
+
+def add_task():
+    task = task_input.get()
+    if task !="":
+        list_box.insert(END, task)
+        task_input.delete(0, END)
+    else:
+        messagebox.showinfo(title="Task Prompt",message="Please Type A Task.")
+
+def delete_task():
+    task_select=list_box.curselection()[0]
+    list_box.delete(task_select)
+
+def save_task():
+    task_save=list_box.get(0,list_box.size())
+    pickle.dump(task_save,open("memory.dat",'wb'))
+    list_box.delete(0,END)
+
+def load_task():
+    task_load=pickle.load(open('memory.dat','rb'))
+    list_box.delete(0,END)
+
+    for task_load in task_load:
+        list_box.insert(END,task_load)
+
+
+
 
 
 
 #Button List
 
-button_1=Button(right_frame,text='Add Task',bg='cornsilk')
+button_1=Button(right_frame,text='Add Task',bg='cornsilk',command=lambda :add_task())
 button_1.grid(row=1,column=0,pady=8)
 
-button_2=Button(right_frame,text='Save Task',bg='cornsilk')
+button_2=Button(right_frame,text='Save Task',bg='cornsilk',command=lambda :save_task())
 button_2.grid(row=2,column=0,pady=8)
 
-button_3=Button(right_frame,text='Delete Task',bg='cornsilk')
+button_3=Button(right_frame,text='Delete Task',bg='cornsilk',command=lambda :delete_task())
 button_3.grid(row=3,column=0,pady=8)
 
-button_4=Button(right_frame,text='Load Tasks',bg='cornsilk')
+button_4=Button(right_frame,text='Load Tasks',bg='cornsilk',command=lambda :load_task())
 button_4.grid(row=4,column=0,pady=8)
 
 # Other Utility Buttons
